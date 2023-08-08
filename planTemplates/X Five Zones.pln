@@ -1,0 +1,85 @@
+! input commands
+input,Overall width of the building,width,200,10,100000
+input,Overall depth of the building,depth,250,10,100000
+input,Width of front/back wings,end1,50,10,100000
+input,Depth of right/left wings,end2,80,10,100000
+input,Offset to front/back wings,offset1,50,10,100000
+input,Offset to right/left wings,offset2,60,10,100000
+! rules to validate input
+rule,width - (end1 + offset1) > 1
+rule,depth - (end2 + offset2) > 1
+!
+!    <-offset1-><-end1->      
+!
+!               d------e             /\
+!               |  r1  |              |
+!               |      |              |
+!    b----------c------f-----g  /\   depth
+!    |          |      |     |   |    |
+!    |r2        |  r3  |   r4|  end2  |
+!    |          |      |     |   |    |
+!    a----------l------i-----h  \/    |
+!               |      |        /\    |
+!               |      |         |    |
+!               |      |      offset2 |
+!               |  r5  |         |    |
+!               k------j        \/    \/
+!    
+!    <---------width--------->
+!
+corner,a,0,offset2
+corner,b,0,offset2 + end2
+corner,c,offset1,offset2 + end2
+corner,d,offset1,depth
+corner,e,offset1 + end1,depth
+corner,f,offset1 + end1, offset2 + end2
+corner,g,width, offset2 + end2
+corner,h,width, offset2
+corner,i,offset1 + end1, offset2
+corner,j,offset1 + end1, 0
+corner,k,offset1, 0
+corner,l,offset1, offset2
+! roof corners
+roofcorner,r1,offset1 + end1/2,depth * 0.9
+roofcorner,r2,width * 0.1,offset2 + end2/2
+roofcorner,r3,offset1 + end1/2,offset2 + end2/2
+roofcorner,r4,width * 0.9,offset2 + end2/2
+roofcorner,r5,offset1 + end1/2,depth * 0.1
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,k
+extwall,k,l
+extwall,l,a
+! interior walls
+intwall,c,f
+intwall,f,i
+intwall,i,l
+intwall,l,c
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c,l
+zone,d,e,f,c
+zone,f,g,h,i
+zone,c,f,i,l
+zone,l,i,j,k
+! roof
+!   specified in clockwise order as viewed from above
+roof,b,r2,a
+roof,b,c,r3,r2
+roof,d,r1,r3,c
+roof,d,e,r1
+roof,e,f,r3,r1
+roof,f,g,r4,r3
+roof,g,h,r4
+roof,r3,r4,h,i
+roof,i,j,r5,r3
+roof,k,l,r3,r5
+roof,l,a,r2,r3

@@ -1,0 +1,75 @@
+! input commands
+input,Overall width of the building,width,200,10,100000
+input,Overall depth of the building,depth,150,10,100000
+input,Left wing width,lfWing,40,10,100000
+input,Right wing width,rtWing,60,10,100000
+input,Offset depth,offset,90,5,100
+! rules to validate input
+rule,width - (lfWing + rtWing) > 1
+rule,depth - offset > 1
+!
+!        <-------------width------------->
+!
+!                 d---------e------------f     /\
+!                 |         |            |     |
+!                 |         |            |     |
+!                 |   r3    |          r4|     |
+!                 |         |            |     |
+!                 |         |            |    depth
+!        b--------c---------h------------g     |
+!   /\   |        |         |                  |
+!    |   |        |         |                  |
+!    |   |r1      |   r2    |                  |
+! offset |        |         |                  |
+!    |   |        |         |                  |
+!    \/  a--------j---------i                  \/
+! 
+!        <-lfWing->          <--rtWing--->      
+!
+!
+corner,a,0,0
+corner,b,0,offset
+corner,c,lfWing,offset
+corner,d,lfWing,depth
+corner,e,width - rtWing, depth
+corner,f,width, depth
+corner,g,width, offset
+corner,h,width - rtWing, offset
+corner,i,width - rtWing,0
+corner,j,lfWing,0
+! roof corners
+roofcorner,r1,width * 0.1,offset/2
+roofcorner,r2,lfWing + (width - (lfWing + rtWing))/2,offset/2 
+roofcorner,r3,lfWing + (width - (lfWing + rtWing))/2,offset + (depth - offset)/2
+roofcorner,r4,width * 0.9,offset + (depth - offset)/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,a
+! interior walls
+intwall,j,c
+intwall,c,h
+intwall,h,e
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c,j
+zone,c,d,e,h
+zone,e,f,g,h
+zone,c,h,i,j
+! roof
+!   specified in clockwise order as viewed from above
+roof,b,c,r2,r1
+roof,c,d,r3,r2
+roof,d,f,r4,r3
+roof,f,g,r4
+roof,g,h,r3,r4
+roof,h,i,r2,r3
+roof,i,a,r1,r2
+roof,a,b,r1

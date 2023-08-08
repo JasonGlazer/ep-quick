@@ -1,0 +1,70 @@
+! input commands
+input,Overall width of the building,width,150,10,100000
+input,Overall depth of the building,depth,120,10,100000
+input,Width of T Base,end1,60,10,100000
+input,Depth of T Wings,end2,80,10,100000
+input,Offset of T Base,offset,40,10,100000
+! rules to validate input
+rule,width - (end1 + offset) > 1
+rule,depth - end2 > 1
+!
+!    <-offset-><-end1->      
+!
+!              d------e             /\
+!              |  r1  |              |
+!              |      |              |
+!    b---------c------f-----g  /\   depth
+!    |         |      |     |   |    |
+!    |r2       |  r3  |   r4|  end2  |
+!    |         |      |     |   |    |
+!    a---------j------i-----h  \/   \/
+!    
+!    <--------width--------->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,0,end2
+corner,c,offset,end2
+corner,d,offset,depth
+corner,e,offset + end1,depth
+corner,f,offset + end1,end2
+corner,g,width,end2
+corner,h,width,0
+corner,i,offset + end1,0
+corner,j,offset,0
+! roof corners
+roofcorner,r1,offset + end1/2,depth * 0.9
+roofcorner,r2,width * 0.1,end2/2
+roofcorner,r3,offset + end1/2,end2/2
+roofcorner,r4,width * 0.9,end2/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,a
+! interior walls
+intwall,c,f
+intwall,f,i
+intwall,j,c
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c,j
+zone,d,e,f,c
+zone,f,g,h,i
+zone,c,f,i,j
+! roof
+!   specified in clockwise order as viewed from above
+roof,b,r2,a
+roof,b,c,r3,r2
+roof,d,r1,r3,c
+roof,d,e,r1
+roof,e,f,r3,r1
+roof,f,g,r4,r3
+roof,g,h,r4
+roof,r2,r4,h,a

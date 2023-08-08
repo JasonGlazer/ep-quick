@@ -1,0 +1,59 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,60,10,100000
+input,Zone depth from exterior wall,zd,15,5,100
+! rules to validate input
+rule,width - 2 * zd > 1
+rule,depth - 2 * zd > 1
+!
+!      b----r1---c     /\
+!      |\       /|     |
+!      | f-----g |     |
+!      | |     | |    depth
+!      | e-----h |     |
+!      |/       \|     |
+!      a----r2---d     \/
+!    
+!      <--width-->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,0,depth
+corner,c,width,depth
+corner,d,width,0
+! interior points
+corner,e,zd,zd
+corner,f,zd,depth - zd
+corner,g,width - zd,depth - zd
+corner,h,width - zd,zd
+! roof corners
+roofcorner,r1,width/2,depth * 0.9
+roofcorner,r2,width/2,depth * 0.1
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,a
+! interior walls
+intwall,e,f
+intwall,f,g
+intwall,g,h
+intwall,h,e
+! walls in corners
+intwall,a,e
+intwall,b,f
+intwall,c,g
+intwall,d,h
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,f,e
+zone,b,c,g,f
+zone,c,d,h,g
+zone,d,a,e,h
+zone,e,f,g,h
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,r1,r2
+roof,c,d,r2,r1
+roof,a,r2,d
+roof,b,c,r1

@@ -1,0 +1,78 @@
+! input commands
+input,Ax,Ax,0,0,100000
+input,Ay,Ay,100,0,100000
+input,Bx,Bx,40,0,100000
+input,By,By,150,0,100000
+input,Cx,Cx,80,0,100000
+input,Cy,Cy,120,0,100000
+input,Dx,Dx,90,0,100000
+input,Dy,Dy,60,0,100000
+input,Ex,Ex,60,0,100000
+input,Ey,Ey,0,0,100000
+input,Fx,Fx,20,0,100000
+input,Fy,Fy,70,0,100000
+!
+input,Kx,Kx,40,0,100000
+input,Ky,Ky,105,0,100000
+input,Lx,Lx,45,0,100000
+input,Ly,Ly,125,0,100000
+input,Mx,Mx,60,0,100000
+input,My,My,115,0,100000
+input,Nx,Nx,55,0,100000
+input,Ny,Ny,85,0,100000
+input,Ox,Ox,50,0,100000
+input,Oy,Oy,80,0,100000
+input,Px,Px,40,0,100000
+input,Py,Py,85,0,100000
+!
+corner,a,Ax,Ay
+corner,b,Bx,By
+corner,c,Cx,Cy
+corner,d,Dx,Dy
+corner,e,Ex,Ey
+corner,f,Fx,Fy
+corner,k,Kx,Ky
+corner,l,Lx,Ly
+corner,m,Mx,My
+corner,n,Nx,Ny
+corner,o,Ox,Oy
+corner,p,Px,Py
+! roof corners
+roofcorner,rc,(Ax+Bx+Cx+Dx+Ex+Fx)/6,(Ay+By+Cy+Dy+Ey+Fy)/5
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,a
+! interior walls
+intwall,k,l
+intwall,l,m
+intwall,m,n
+intwall,n,o
+intwall,o,p
+intwall,p,k
+intwall,a,k
+intwall,b,l
+intwall,c,m
+intwall,d,n
+intwall,e,o
+intwall,f,p
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,l,k
+zone,b,c,m,l
+zone,c,d,n,m
+zone,d,e,o,n
+zone,e,f,p,o
+zone,f,a,k,p
+zone,k,l,m,n,o,p
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,rc
+roof,b,c,rc
+roof,c,d,rc
+roof,d,e,rc
+roof,e,f,rc
+roof,f,a,rc

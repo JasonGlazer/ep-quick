@@ -1,0 +1,122 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,160,10,100000
+input,First end of L,end1,50,10,10000
+input,Second end of L,end2,50,10,10000
+input,Zone depth from exterior wall,zd,15,5,100
+! rules to validate input
+rule,width - end1 > 1
+rule,depth - end2 > 1
+rule,end1 - 2 * zd > 1
+rule,end2 - 2 * zd > 1
+!
+!      <----end1---->      
+!
+!      d-e--------f-g                   /\
+!      | |  r1    | |                    |
+!      c-r--------s-h                    |
+!      | |        | |                    |
+!      | |        | |                    |
+!      | |        t-i-------j--k  /\   depth
+!      | |        | |       |  |   |     |
+!      | |        u-v-------w--l   |     |
+!      | |   r2          r3 |  |  end2   |
+!      b-q------------------x--m   |     |
+!      | |                  |  |   |     |
+!      a-p------------------o--n   \/    \/
+!    
+!      <---------width-------->
+!
+corner,a,0,0
+corner,b,0,zd
+corner,c,0,depth - zd
+corner,d,0,depth
+corner,e,zd,depth
+corner,f,end1 - zd,depth
+corner,g,end1,depth
+corner,h,end1,depth - zd
+corner,i,end1,end2
+corner,j,width - zd,end2
+corner,k,width,end2
+corner,l,width,end2 - zd
+corner,m,width,zd
+corner,n,width,0
+corner,o,width - zd,0
+corner,p,zd,0
+corner,q,zd,zd
+corner,r,zd,depth - zd
+corner,s,end1 - zd, depth - zd
+corner,t,end1 - zd, end2
+corner,u,end1 - zd, end2 - zd
+corner,v,end1, end2 - zd
+corner,w,width - zd, end2 - zd
+corner,x,width - zd, zd
+! roof corners
+roofcorner,r1,end1/2,depth * 0.9
+roofcorner,r2,end1/2,end2/2
+roofcorner,r3,width * 0.9,end2/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,k
+extwall,k,l
+extwall,l,m
+extwall,m,n
+extwall,n,o
+extwall,o,p
+extwall,p,a
+! interior walls
+intwall,b,q
+intwall,c,r
+intwall,e,r
+intwall,f,s
+intwall,h,s
+intwall,i,t
+intwall,i,v
+intwall,j,w
+intwall,l,w
+intwall,m,x
+intwall,o,x
+intwall,p,q
+intwall,q,r
+intwall,r,s
+intwall,s,t
+intwall,t,u
+intwall,u,v
+intwall,v,w
+intwall,w,x
+intwall,u,q
+! interior wall at angle (not shown)
+intwall,q,u
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,q,p
+zone,b,c,r,q
+zone,c,d,e,r
+zone,e,f,s,r
+zone,f,g,h,s
+zone,h,i,t,s
+zone,i,v,u,t
+zone,i,j,w,v
+zone,j,k,l,w
+zone,l,m,x,w
+zone,m,n,o,x
+zone,o,p,q,x
+!fully interior zones
+zone,r,s,t,u,q
+zone,u,v,w,x,q
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,d,r1,r2
+roof,d,g,r1
+roof,g,i,r2,r1
+roof,i,k,r3,r2
+roof,k,n,r3
+roof,r2,r3,n,a

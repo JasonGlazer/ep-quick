@@ -1,0 +1,79 @@
+! input commands
+input,Overall width of the building,width,200,10,100000
+input,Depth of the left wing,lfDep,120,10,100000
+input,Depth of the right wing,rtDep,80,10,100000
+input,Left wing width,lfWing,60,10,100000
+input,Right wing width,rtWing,60,10,100000
+input,Base depth,bsDep,50,10,100000
+! rules to validate input
+rule,width - (lfWing + rtWing) > 1
+rule,lfDep - bsDep > 1
+rule,rtDep - bsDep > 1
+!
+!        <-lfWing-->      <-rtWing->      
+!
+! /\     c---------d                     
+!  |     |    r1   |                     
+!  |     |         |      g--------h        /\
+!  |     |         |      |   r4   |        |
+!  |     |         |      |        |        |
+! lfDep  b---------e------f--------i  /\   rtDep
+!  |     |         |      |        |   |    |
+!  |     |    r2   |      |   r3   |  bsDep |
+!  |     |         |      |        |   |    |
+!  \/    a---------l------k--------j  \/   \/
+!    
+!        <--------width------------>
+!
+corner,a,0,0
+corner,b,0,bsDep
+corner,c,0,lfDep
+corner,d,lfWing,lfDep
+corner,e,lfWing,bsDep
+corner,f,width - rtWing,bsDep
+corner,g,width - rtWing,rtDep
+corner,h,width,rtDep
+corner,i,width,bsDep
+corner,j,width,0
+corner,k,width - rtWing,0
+corner,l,lfWing,0
+! roof corners
+roofcorner,r1,lfWing/2,lfDep * 0.9
+roofcorner,r2,lfWing/2,bsDep/2
+roofcorner,r3,width - rtWing/2,bsDep/2
+roofcorner,r4,width - rtWing/2,rtDep*0.9
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,k
+extwall,k,l
+extwall,l,a
+! interior walls
+intwall,b,e
+intwall,l,e
+intwall,i,f
+intwall,k,f
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,e,l
+zone,b,c,d,e
+zone,e,f,k,l
+zone,f,g,h,i
+zone,i,j,k,f
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,c,r1,r2
+roof,c,d,r1
+roof,d,e,r2,r1
+roof,e,f,r3,r2
+roof,g,r4,r3,f
+roof,g,h,r4
+roof,h,j,r3,r4
+roof,r2,r3,j,a

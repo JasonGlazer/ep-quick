@@ -1,0 +1,36 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,60,10,100000
+!
+!      b---------c     /\
+!      |    r1   |     |
+!      |     .   |     |
+!      |     .   |    depth
+!      |     .   |     |
+!      |    r2   |     |
+!      a---------d     \/
+!    
+!      <--width-->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,0,depth
+corner,c,width,depth
+corner,d,width,0
+! roof corners
+roofcorner,r1,width/2,depth * 0.9
+roofcorner,r2,width/2,depth * 0.1
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,a
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c,d
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,r1,r2
+roof,c,d,r2,r1
+roof,a,r2,d
+roof,b,c,r1

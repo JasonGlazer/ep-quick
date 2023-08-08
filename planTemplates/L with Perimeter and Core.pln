@@ -1,0 +1,79 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,160,10,100000
+input,First end of L,end1,50,10,10000
+input,Second end of L,end2,50,10,10000
+input,Zone depth from exterior wall,zd,15,5,100
+! rules to validate input
+rule,width - end1 > 1
+rule,depth - end2 > 1
+rule,end1 - 2 * zd > 1
+rule,end2 - 2 * zd > 1
+!
+!      <----end1---->      
+!
+!      b------------c                 /\
+!      |\    r1    /|                  |
+!      | g--------h |                  |
+!      | |        | |                  |
+!      | |        | |                  |
+!      | |        | d---------e  /\   depth
+!      | |        |/         /|   |    |
+!      | |        i---------j |   |    |
+!      | |   r2          r3 | |  end2  |
+!      | l------------------k |   |    |
+!      |/                    \|   |    |
+!      a----------------------f   \/   \/
+!    
+!      <---------width-------->
+!
+corner,a,0,0
+corner,b,0,depth
+corner,c,end1,depth
+corner,d,end1,end2
+corner,e,width,end2
+corner,f,width,0
+corner,g,zd,depth - zd
+corner,h,end1 - zd,depth - zd
+corner,i,end1 - zd,end2 - zd
+corner,j,width - zd,end2 - zd
+corner,k,width - zd,zd
+corner,l,zd,zd
+! roof corners
+roofcorner,r1,end1/2,depth * 0.9
+roofcorner,r2,end1/2,end2/2
+roofcorner,r3,width * 0.9,end2/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,a
+! interior walls
+intwall,g,h
+intwall,h,i
+intwall,i,j
+intwall,j,k
+intwall,k,l
+intwall,l,g
+! interior wall at angle (not shown)
+intwall,l,i
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,g,l
+zone,b,c,h,g
+zone,c,d,i,h
+zone,d,e,j,i
+zone,e,f,k,j
+zone,l,k,f,a
+zone,g,h,i,l
+zone,i,j,k,l
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,r1,r2
+roof,b,c,r1
+roof,c,d,r2,r1
+roof,d,e,r3,r2
+roof,e,f,r3
+roof,r2,r3,f,a

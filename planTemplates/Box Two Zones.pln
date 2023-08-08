@@ -1,0 +1,48 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,60,10,100000
+input,Mid wall distance,mid,40,5,100000
+! rules to validate input
+rule,width - mid > 1
+!
+!      <-mid->      
+!
+!      b-----c-----d     /\
+!      |     |     |     |
+!      |     |     |     |
+!      |r1   |   r2|    depth
+!      |     |     |     |
+!      |     |     |     |
+!      a-----f-----e     \/
+!    
+!      <---width--->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,0,depth
+corner,c,mid,depth
+corner,d,width,depth
+corner,e,width,0
+corner,f,mid,0
+! roof corners
+roofcorner,r1,width * 0.1,depth/2
+roofcorner,r2,width * 0.9,depth/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,a
+! interior walls
+intwall,c,f
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c,f
+zone,f,c,d,e
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,r1,r2,e
+roof,b,d,r2,r1
+roof,a,b,r1
+roof,d,e,r2

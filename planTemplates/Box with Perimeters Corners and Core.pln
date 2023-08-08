@@ -1,0 +1,82 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,60,10,100000
+input,Zone depth from exterior wall,zd,15,5,100
+! rules to validate input
+rule,width - 2 * zd > 1
+rule,depth - 2 * zd > 1
+!
+!      d--e--r1--f--g     /\
+!      |  |      |  |     |
+!      c--n------o--h     |
+!      |  |      |  |    depth
+!      b--m------p--i     |
+!      |  |      |  |     |
+!      a--l--r2--k--j     \/
+!    
+!      <---width--->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,0,zd
+corner,c,0,depth - zd
+corner,d,0,depth
+corner,e,zd,depth
+corner,f,width - zd,depth
+corner,g,width,depth
+corner,h,width,depth- zd
+corner,i,width,zd
+corner,j,width,0
+corner,k,width - zd,0
+corner,l,zd,0
+! interior points
+corner,m,zd,zd
+corner,n,zd,depth - zd
+corner,o,width - zd,depth - zd
+corner,p,width - zd,zd
+! roof corners
+roofcorner,r1,width/2,depth * 0.9
+roofcorner,r2,width/2,depth * 0.1
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,e
+extwall,e,f
+extwall,f,g
+extwall,g,h
+extwall,h,i
+extwall,i,j
+extwall,j,k
+extwall,k,l
+extwall,l,a
+! interior walls
+intwall,m,l
+intwall,m,b
+intwall,n,c
+intwall,n,e
+intwall,o,f
+intwall,o,h
+intwall,p,i
+intwall,p,k
+intwall,m,n
+intwall,n,o
+intwall,o,p
+intwall,p,m
+! zones
+!   specified in clockwise order as viewed from above
+zone,b,m,l,a
+zone,c,n,m,b
+zone,d,e,n,c
+zone,e,f,o,n
+zone,f,g,h,o
+zone,o,h,i,p
+zone,p,i,j,k
+zone,m,p,k,l
+zone,n,o,p,m
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,d,r1,r2
+roof,g,j,r2,r1
+roof,a,r2,j
+roof,d,g,r1

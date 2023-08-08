@@ -1,0 +1,55 @@
+! input commands
+input,Ax,Ax,0,0,100000
+input,Ay,Ay,100,0,100000
+input,Bx,Bx,30,0,100000
+input,By,By,170,0,100000
+input,Cx,Cx,100,0,100000
+input,Cy,Cy,130,0,100000
+input,Dx,Dx,100,0,100000
+input,Dy,Dy,0,0,100000
+input,Kx,Kx,35,0,100000
+input,Ky,Ky,95,0,100000
+input,Lx,Lx,35,0,100000
+input,Ly,Ly,125,0,100000
+input,Mx,Mx,80,0,100000
+input,My,My,125,0,100000
+input,Nx,Nx,70,0,100000
+input,Ny,Ny,80,0,100000
+!
+corner,a,Ax,Ay
+corner,b,Bx,By
+corner,c,Cx,Cy
+corner,d,Dx,Dy
+corner,k,Kx,Ky
+corner,l,Lx,Ly
+corner,m,Mx,My
+corner,n,Nx,Ny
+! roof corners
+roofcorner,rc,(Ax+Bx+Cx+Dx)/4,(Ay+By+Cy+Dy)/4
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,d
+extwall,d,a
+! interior walls
+intwall,k,l
+intwall,l,m
+intwall,m,n
+intwall,n,k
+intwall,a,k
+intwall,b,l
+intwall,c,m
+intwall,d,n
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,l,k
+zone,b,c,m,l
+zone,c,d,n,m
+zone,d,a,k,n
+zone,k,l,m,n
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,rc
+roof,b,c,rc
+roof,c,d,rc
+roof,d,a,rc

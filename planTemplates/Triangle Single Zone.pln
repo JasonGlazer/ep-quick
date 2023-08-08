@@ -1,0 +1,37 @@
+! input commands
+input,Overall width of the building,width,100,10,100000
+input,Overall depth of the building,depth,60,10,100000
+input,Offset of point,offset,40,-50000,50000
+!
+!      offset
+!      <----->
+!
+!            b           /\
+!           / \          |
+!          /   \         |
+!         /  r  \      depth
+!        /       \       |
+!       /         \      |
+!      a-----------c     \/
+!    
+!      <---width--->
+!
+! This is a simple rectangular plan
+corner,a,0,0
+corner,b,offset,depth
+corner,c,width,0
+! roof corners
+roofcorner,r,offset,depth/2
+! exterior walls
+extwall,a,b
+extwall,b,c
+extwall,c,a
+! zones
+!   specified in clockwise order as viewed from above
+zone,a,b,c
+! roof
+!   specified in clockwise order as viewed from above
+roof,a,b,r
+roof,b,c,r
+roof,a,r,c
+
